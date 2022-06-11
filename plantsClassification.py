@@ -5,16 +5,17 @@ import torch
 import torch.nn as nn
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader
+import pymysql
 
 
 device = torch.device("cpu")
-dir = '/home/ubuntu/img/and/'
-#dir = 'C:/Pegue/Final_Project/test2/'
+#dir = '/home/ubuntu/img/and/'
+dir = 'C:/Pegue/Final_Project/plant_project-main/plant_project-main/media/'
 
 model=models.regnet_x_32gf(pretrained=False)
 model.fc=nn.Linear(in_features=2520, out_features=6) 
-model.load_state_dict(torch.load("/home/ubuntu/ai/plants_classification.pt", map_location=torch.device('cpu')))
-#model.load_state_dict(torch.load("C:/Pegue/Final_Project/test2/plants_classification.pt", map_location=torch.device('cpu')))
+#model.load_state_dict(torch.load("/home/ubuntu/ai/plants_classification.pt", map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("C:/Pegue/Final_Project/test2/plants_classification.pt", map_location=torch.device('cpu')))
 model = model.to(device)
 
 
@@ -38,15 +39,15 @@ class customDataset(Dataset):
 
 
 
-def Predict(filename, num_images=2):   
+def Predict(userid, filename, num_images=2):   
 
   was_training = model.training
   model.eval() # 모델을 검증모드로
 
 
 
-  print('Predict....filename')
-  print(filename)
+  print('Predict....(filename : {})'.format(filename))
+
   tf = transforms.Compose([
     transforms.Resize((224, 224)), # 이미지 사이즈를 resize로 변경한다.
     #transforms.CenterCrop(200), # 이미지 중앙을 resize × resize로 자른다      
@@ -58,8 +59,8 @@ def Predict(filename, num_images=2):
 
   imgloader = DataLoader(dataset, batch_size=32, shuffle=False, num_workers=0)
 
-  class_names = ['멕시코소철', '백량금', '아글라오네마', '옥살리스(사랑초)', '골드크레스트 "윌마"']
-
+  class_names = ['멕시코소철', '백량금', '아글라오네마', '옥살리스(사랑초)', '골드크레스트 "윌마"']
+  #class_names = [16245, 18694, 19469, 19474, 12955]
   print('Predict....(tensor complete)')
   
   with torch.no_grad():
