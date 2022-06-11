@@ -229,9 +229,9 @@ def sel_item() : # db에서 data 추출 함수
 
 def water_date() : # db에서 data 추출 함수
     db = db_conn()
-    #sql = "select max(waterdate) from user.plantmanage" # 물 준 마지막 날짜 기록 가져오기 서버
+    # sql = "select max(waterdate) from weather.plantmanage"  # 물 준 마지막 날짜 기록 가져오기 로컬
     sql = "select max(date) from user.rasData"  # 물 준 마지막 날짜 기록 가져오기 서버 예제
-    #sql = "select max(waterdate) from weather.plantmanage"  # 물 준 마지막 날짜 기록 가져오기 로컬 (마지막엔 이걸로 연결해야해요!)
+    # sql = "select max(waterdate) from user.plantmanage" # 물 준 마지막 날짜 기록 가져오기 서버(마지막엔 이걸로 연결해야해요!)
     df = pd.read_sql(sql,db)
     return df
 
