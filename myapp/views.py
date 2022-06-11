@@ -172,6 +172,13 @@ def light(request):
                }
     return render(request, 'light.html',context)
 
+# 문 준 날짜 html
+def water(request):
+    context = {#'waterDate': water_date().loc[0,'max(waterdate).to_pydatetime().strftime('%Y-%m-%d %H:%M:%S')'], # 서버에 원래 위치 (마지막엔 이걸로 연결해야해요!)
+               'waterDate': water_date().loc[0, 'max(date)'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S'), # 서버 rasdate로 예시 위치
+               'calDate': cal_date()}
+    return render(request, 'water.html',context)
+
 
 # 서버
 
@@ -219,9 +226,3 @@ def cal_date() :
     date_diff = now - datecompare
     cd = date_diff.days
     return cd
-
-def water(request):
-    context = {#'waterDate': water_date().loc[0,'max(waterdate).to_pydatetime().strftime('%Y-%m-%d %H:%M:%S')'], # 서버에 원래 위치 (마지막엔 이걸로 연결해야해요!)
-               'waterDate': water_date().loc[0, 'max(date)'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S'), # 서버 rasdate로 예시 위치
-               'calDate': cal_date()}
-    return  render(request, 'draw/water.html',context)
