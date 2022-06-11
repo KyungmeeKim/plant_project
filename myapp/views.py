@@ -18,6 +18,12 @@ class ImageViewset(viewsets.ModelViewSet):
     queryset = UserImage.objects.all()
     serializer_class = ImageSerializer
 
+
+        
+        
+
+        
+
     # @action(detail=True, methods=['post'])
     # def set_image(self, request, pk=None):
     #     userimage = self.get_object("userimage")

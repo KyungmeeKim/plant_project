@@ -45,7 +45,7 @@ def Predict(filename, num_images=2):
 
 
 
-  #filename = '1.jpg'
+  print('Predict....(filename : ' + filename + ' complete)')
   tf = transforms.Compose([
     transforms.Resize((224, 224)), # 이미지 사이즈를 resize로 변경한다.
     #transforms.CenterCrop(200), # 이미지 중앙을 resize × resize로 자른다      
@@ -59,7 +59,7 @@ def Predict(filename, num_images=2):
 
   class_names = ['멕시코소철', '백량금', '아글라오네마', '옥살리스(사랑초)', '골드크레스트 "윌마"']
 
-  
+  print('Predict....(tensor complete)')
   
   with torch.no_grad():
 
@@ -67,13 +67,16 @@ def Predict(filename, num_images=2):
 
     inputs, labels = next(iterator)   
     
+    print('Predict....(input complete)')
+
     outputs = model(inputs)
 
     _, preds = torch.max(outputs, 1)
         
     plant = class_names[preds[0]]
     model.train(mode=was_training)      
-
+    
+    print('Predict....(output complete)')
   return plant
 
 

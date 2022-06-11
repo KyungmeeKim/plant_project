@@ -180,7 +180,7 @@ class User(models.Model):
 class UserImage(models.Model):
     user = models.CharField(primary_key=True,max_length=50)
     userimage = models.ImageField(db_column='userImage', upload_to='')  # Field name made lowercase.
-    plantname = models.CharField(db_column="plantName", max_length=50)
+    plantname = models.CharField(db_column="plantName", max_length=50,blank=True, null=True)
 
     class Meta:
         managed = False
