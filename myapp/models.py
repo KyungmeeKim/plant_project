@@ -166,8 +166,7 @@ class Test(models.Model):
 
 
 class User(models.Model):
-    num = models.AutoField(primary_key=True)
-    userid = models.CharField(db_column='userID', max_length=50)  # Field name made lowercase.
+    userid = models.CharField(db_column='userID',primary_key=True, max_length=50)  # Field name made lowercase.
     userpassword = models.CharField(db_column='userPassword', max_length=50)  # Field name made lowercase.
     username = models.CharField(db_column='userName', max_length=50)  # Field name made lowercase.
     userbirth = models.CharField(db_column='userBirth', max_length=50)  # Field name made lowercase.

@@ -7,6 +7,9 @@ from .models import User, UserImage, Rasdata
 from django.views.decorators.csrf import csrf_exempt
 import time
 from plantsClassification import Predict
+from datetime import datetime
+from .models import Plantmanage
+from .serializers import WaterDataSerializer
 
 
 class ImageViewset(viewsets.ModelViewSet):
@@ -23,7 +26,10 @@ class ImageViewset(viewsets.ModelViewSet):
 
         return super().create(request, *args, **kwargs)
 
-
+class WaterViewset(viewsets.ModelViewSet): # 바뀐점!!!!
+    queryset = Plantmanage.objects.all()
+    serializer_class = WaterDataSerializer
+    
 # @csrf_exempt
 # def post(request):
 #     if request.method == "POST":
@@ -191,15 +197,31 @@ def db_conn() :
     return db
 
 ## 데이터 추출
-
 def sel_item() : # db에서 data 추출 함수
     db = db_conn()
-    sql = "select * from rasData WHERE date BETWEEN DATE_ADD(NOW(),INTERVAL -1 DAY ) AND NOW()" #1일 동안의 데이터 불러오기 (서버에 적용시 -1로 변경)
-    # sql = "select * from test WHERE date BETWEEN DATE_ADD(NOW(),INTERVAL -1 DAY ) AND NOW()"  # 1일 동안의 데이터 불러오기 테스트
+    sql = "select * from rasData WHERE date BETWEEN DATE_ADD(NOW(),INTERVAL -7 DAY ) AND NOW()" #1일 동안의 데이터 불러오기 (서버에 적용시 -1로 변경)
     df = pd.read_sql(sql,db)
     return df
 
-def snapshot(request):
-    time.sleep(1)
-    image = open("/home/ubuntu/img/picam/woo.jpg","rb")
-    return HttpResponse(image, content_type="image/jpg")
+def water_date() : # db에서 data 추출 함수
+    db = db_conn()
+    #sql = "select max(waterdate) from user.plantmanage" # 물 준 마지막 날짜 기록 가져오기 서버
+    sql = "select max(date) from user.rasData"  # 물 준 마지막 날짜 기록 가져오기 서버 예제
+    #sql = "select max(waterdate) from weather.plantmanage"  # 물 준 마지막 날짜 기록 가져오기 로컬 (마지막엔 이걸로 연결해야해요!)
+    df = pd.read_sql(sql,db)
+    return df
+
+def cal_date() :
+    now = datetime.now()
+    # datecompare = datetime.strptime(water_date().loc[0, 'max(waterdate)'], '%Y-%m-%d %H:%M') 로컬 테스트
+    datecompare = water_date().loc[0, 'max(date)'].to_pydatetime() # 서버 rasData로 테스트
+    # datecompare = water_date().loc[0, 'max(waterDate)'].to_pydatetime() # 서버 원래 위치 연결 (마지막엔 이걸로 연결해야해요!)
+    date_diff = now - datecompare
+    cd = date_diff.days
+    return cd
+
+def water(request):
+    context = {#'waterDate': water_date().loc[0,'max(waterdate).to_pydatetime().strftime('%Y-%m-%d %H:%M:%S')'], # 서버에 원래 위치 (마지막엔 이걸로 연결해야해요!)
+               'waterDate': water_date().loc[0, 'max(date)'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S'), # 서버 rasdate로 예시 위치
+               'calDate': cal_date()}
+    return  render(request, 'draw/water.html',context)

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title></title>
+</head>
+
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-color:#bbb;border-spacing:0;}
+    .tg td{background-color:#E0FFEB;border-color:#bbb;border-style:solid;border-width:0px;color:#594F4F;
+      font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg th{background-color:#9DE0AD;border-color:#bbb;border-style:solid;border-width:0px;color:#493F3F;
+      font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg .tg-tcrt{font-family:Arial, Helvetica, sans-serif !important;text-align:center;vertical-align:top}
+    .tg .tg-baqh{text-align:center;vertical-align:top}
+</style>
+    <table class="tg">
+        <thead>
+          <tr>
+            <th class="tg-tcrt" colspan="3"><span style="font-weight:bold">물준지 얼마나 지났을까요?</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tg-baqh">오늘</td>
+            <td class="tg-baqh">마지막으로 물준날</td>
+            <td class="tg-baqh">물준지(일째)</td>
+          </tr>
+
+          <tr>
+            <td class="tg-baqh">
+                <div>
+                    <script>
+                        date = new Date().toLocaleDateString();
+                        document.write(date);
+                    </script>
+                </div>
+            </td>
+            <td class="tg-baqh">{{waterDate}}</td>
+            <td class="tg-baqh">{{calDate}}</td>
+          </tr>
+
+        </tbody>
+    </table>
+
+</html>
