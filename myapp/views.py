@@ -29,7 +29,7 @@ class ImageViewset(viewsets.ModelViewSet):
 class WaterViewset(viewsets.ModelViewSet): # 바뀐점!!!!
     queryset = Plantmanage.objects.all()
     serializer_class = WaterDataSerializer
-    
+
 # @csrf_exempt
 # def post(request):
 #     if request.method == "POST":
@@ -226,3 +226,8 @@ def cal_date() :
     date_diff = now - datecompare
     cd = date_diff.days
     return cd
+
+def snapshot(request):
+    time.sleep(1)
+    image = open("/home/ubuntu/img/picam/woo.jpg","rb")
+    return HttpResponse(image, content_type="image/jpg")
