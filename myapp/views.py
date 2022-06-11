@@ -1,5 +1,6 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from matplotlib.style import use
 from rest_framework import viewsets
 from rest_framework.serializers import Serializer
 from .serializers import PostSerializer, ImageSerializer, RaspberrySerializer
@@ -14,21 +15,32 @@ from .serializers import WaterDataSerializer
 
 
 class ImageViewset(viewsets.ModelViewSet):
+    
     queryset = UserImage.objects.all()
-    serializer_class = ImageSerializer
+    serializer_class = ImageSerializer    
+    userid = ''
+    def create(self, request, *args, **kwargs):      
 
+        data1 = ''
+        global userid
+        userid = request.POST.get('user')
 
-    # def create(self, request, *args, **kwargs):
-    #     image = request.POST.get('userimage')
-    #     label = Predict(image)
-    #     serializers = ImageSerializer
-    #     serializers.save(plantname = label)
-            
-    #     return super().create(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
-       
+    def perform_create(self, serializer):
+        serializer.save()
 
+        global userid
 
+        data = UserImage.objects.values().filter(user = userid)
+        
+        data1 = data[0]
+        filename = data1['userimage']
+    
+
+        label = Predict(userid, filename)
+        print(label)
+        serializer.save(plantname = label)
 
 class WaterViewset(viewsets.ModelViewSet): # 바뀐점!!!!
     queryset = Plantmanage.objects.all()
