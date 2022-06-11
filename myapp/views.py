@@ -2,11 +2,12 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.serializers import Serializer
 from .serializers import PostSerializer, ImageSerializer, RaspberrySerializer
 from .models import User, UserImage, Rasdata
 from django.views.decorators.csrf import csrf_exempt
 import time
-from plantsClassification import Predict
+from data import Predict
 from datetime import datetime
 from .models import Plantmanage
 from .serializers import WaterDataSerializer
@@ -16,11 +17,15 @@ class ImageViewset(viewsets.ModelViewSet):
     queryset = UserImage.objects.all()
     serializer_class = ImageSerializer
 
-    Predict()
 
     def create(self, request, *args, **kwargs):
         if request.method == "POST":
-            userid = request.POST.get('user')
+            image = request.POST.get('userimage')
+            label = Predict(image)
+            serializers = ImageSerializer
+            serializers.save(plantname = label)
+            
+        return super().create(request, *args, **kwargs)
 
        
 
