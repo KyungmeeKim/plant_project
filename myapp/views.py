@@ -7,29 +7,41 @@ from .serializers import PostSerializer, ImageSerializer, RaspberrySerializer
 from .models import User, UserImage, Rasdata
 from django.views.decorators.csrf import csrf_exempt
 import time
-from data import Predict
+# from data import Predict
 from datetime import datetime
 from .models import Plantmanage
 from .serializers import WaterDataSerializer
+# from rest_framework.decorators import action
 
 
 class ImageViewset(viewsets.ModelViewSet):
     queryset = UserImage.objects.all()
     serializer_class = ImageSerializer
 
+    # @action(detail=True, methods=['post'])
+    # def set_image(self, request, pk=None):
+    #     userimage = self.get_object("userimage")
+    #     label = Predict(userimage)
+    #     serializer = ImageSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         userimage.set_image(serializer.validated_data['plantname'])
+    #         userimage.save()
+    #         return JsonResponse({'code': '0000', 'msg': '로그인성공입니다.'}, status=200)
+    #     else:
+    #         return JsonResponse({'code': '1001', 'msg': '로그인실패입니다.'}, status=400)
 
-    def create(self, request, *args, **kwargs):
-        if request.method == "POST":
-            image = request.POST.get('userimage')
-            label = Predict(image)
-            serializers = ImageSerializer
-            serializers.save(plantname = label)
+
+    # def create(self, request, *args, **kwargs):
+    #     image = request.POST.get('userimage')
+    #     label = Predict(image)
+    #     serializers = ImageSerializer
+    #     serializers.save(plantname = label)
             
-        return super().create(request, *args, **kwargs)
+    #     return super().create(request, *args, **kwargs)
 
        
 
-        return super().create(request, *args, **kwargs)
+
 
 class WaterViewset(viewsets.ModelViewSet): # 바뀐점!!!!
     queryset = Plantmanage.objects.all()
@@ -50,9 +62,9 @@ class WaterViewset(viewsets.ModelViewSet): # 바뀐점!!!!
     #         if file_serializer.is_valid():
     #             file_serializer.save()
             
-    #             return JsonResponse({'code': '0000', 'msg': '로그인성공입니다.'}, status=200)
-    #         else:
-    #             return JsonResponse({'code': '1001', 'msg': '로그인실패입니다.'}, status=400)
+            #     return JsonResponse({'code': '0000', 'msg': '로그인성공입니다.'}, status=200)
+            # else:
+            #     return JsonResponse({'code': '1001', 'msg': '로그인실패입니다.'}, status=400)
 
 
 class PostViewset(viewsets.ModelViewSet):
