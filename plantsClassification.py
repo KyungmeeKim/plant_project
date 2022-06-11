@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader
-import pymysql
+
 
 device = torch.device("cpu")
 dir = '/home/ubuntu/img/and/'
@@ -38,28 +38,13 @@ class customDataset(Dataset):
 
 
 
-def Predict(num_images=2):   
+def Predict(filename, num_images=2):   
 
   was_training = model.training
   model.eval() # 모델을 검증모드로
 
-  db = pymysql.connect(host='team7mysql.clhnj2zwdisk.eu-west-2.rds.amazonaws.com', port=3306, user='team7', password='multiteam07',
-                        db='user', charset='utf8')   # charset: 인코딩 설정
-
-  cursor = db.cursor() 
-
-  sql = "SELECT id, userImage FROM userImage order by id desc LIMIT 1"
-  
 
 
-  cursor.execute(sql)
-  result = cursor.fetchall()
-  for data in result:
-      datas = data  
-  db.close()
-
-  user_id = str(datas[0])
-  filename = datas[1]
   #filename = '1.jpg'
   tf = transforms.Compose([
     transforms.Resize((224, 224)), # 이미지 사이즈를 resize로 변경한다.
@@ -89,17 +74,7 @@ def Predict(num_images=2):
     plant = class_names[preds[0]]
     model.train(mode=was_training)      
 
-  db = pymysql.connect(host='team7mysql.clhnj2zwdisk.eu-west-2.rds.amazonaws.com', port=3306, user='team7', password='multiteam07',
-                        db='user', charset='utf8')   # charset: 인코딩 설정
-
-  cursor = db.cursor()
-
-  sql = "UPDATE userImage SET plantName = '" + plant + "' where id = " + user_id
-
-  cursor.execute(sql)
-  
-  db.commit() 
-  db.close()
+  return plant
 
 
 
