@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script> <!-- CDN -->
+    <canvas id="line-chart" width="330" height="250"></canvas> <!-- 앱과 크기조절-->
+</head>
+<body>
+
+<script>new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: [{% for i in date %}'{{i}}',{% endfor %}],
+    datasets: [{
+        data: [{% for i in humid %}'{{i}}',{% endfor %}],
+        label: "습도",
+        borderColor: "#3e95cd",
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: false,
+    legend: {
+        positon: 'top',
+    },
+    title: {
+      display: true,
+      text: '1일간 습도'
+    }
+  }
+});
+</script>
+</body>
+</html>
