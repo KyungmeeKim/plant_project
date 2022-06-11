@@ -18,31 +18,13 @@ class ImageViewset(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
 
 
-        
-        
-
-        
-
-    # @action(detail=True, methods=['post'])
-    # def set_image(self, request, pk=None):
-    #     userimage = self.get_object("userimage")
-    #     label = Predict(userimage)
-    #     serializer = ImageSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         userimage.set_image(serializer.validated_data['plantname'])
-    #         userimage.save()
-    #         return JsonResponse({'code': '0000', 'msg': '로그인성공입니다.'}, status=200)
-    #     else:
-    #         return JsonResponse({'code': '1001', 'msg': '로그인실패입니다.'}, status=400)
-
-
-    def create(self, request, *args, **kwargs):
-        image = request.POST.get('userimage')
-        label = Predict(image)
-        serializers = ImageSerializer
-        serializers.save(plantname = label)
+    # def create(self, request, *args, **kwargs):
+    #     image = request.POST.get('userimage')
+    #     label = Predict(image)
+    #     serializers = ImageSerializer
+    #     serializers.save(plantname = label)
             
-        return super().create(request, *args, **kwargs)
+    #     return super().create(request, *args, **kwargs)
 
        
 
@@ -196,8 +178,8 @@ def light(request):
 
 # 문 준 날짜 html
 def water(request):
-    context = {'waterDate': water_date().loc[0,'max(waterDate)'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S'), # 서버에 원래 위치 (마지막엔 이걸로 연결해야해요!)
-               #'waterDate': water_date().loc[0, 'max(date)'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S'), # 서버 rasdate로 예시 위치
+    context = {#'waterDate': water_date().loc[0,'max(waterdate).to_pydatetime().strftime('%Y-%m-%d %H:%M:%S')'], # 서버에 원래 위치 (마지막엔 이걸로 연결해야해요!)
+               'waterDate': water_date().loc[0, 'max(date)'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S'), # 서버 rasdate로 예시 위치
                'calDate': cal_date()}
     return render(request, 'water.html',context)
 
@@ -234,15 +216,17 @@ def sel_item() : # db에서 data 추출 함수
 
 def water_date() : # db에서 data 추출 함수
     db = db_conn()
-    #sql = "select max(date) from user.rasData"  # 물 준 마지막 날짜 기록 가져오기 서버 예제
-    sql = "select max(waterDate) from user.plantmanage" # 물 준 마지막 날짜 기록 가져오기 서버(마지막엔 이걸로 연결해야해요!)
+    # sql = "select max(waterdate) from weather.plantmanage"  # 물 준 마지막 날짜 기록 가져오기 로컬
+    sql = "select max(date) from user.rasData"  # 물 준 마지막 날짜 기록 가져오기 서버 예제
+    # sql = "select max(waterdate) from user.plantmanage" # 물 준 마지막 날짜 기록 가져오기 서버(마지막엔 이걸로 연결해야해요!)
     df = pd.read_sql(sql,db)
     return df
 
 def cal_date() :
     now = datetime.now()
-    #datecompare = water_date().loc[0, 'max(date)'].to_pydatetime() # 서버 rasData로 테스트
-    datecompare = water_date().loc[0, 'max(waterDate)'].to_pydatetime() # 서버 원래 위치 연결 (마지막엔 이걸로 연결해야해요!)
+    # datecompare = datetime.strptime(water_date().loc[0, 'max(waterdate)'], '%Y-%m-%d %H:%M') 로컬 테스트
+    datecompare = water_date().loc[0, 'max(date)'].to_pydatetime() # 서버 rasData로 테스트
+    # datecompare = water_date().loc[0, 'max(waterDate)'].to_pydatetime() # 서버 원래 위치 연결 (마지막엔 이걸로 연결해야해요!)
     date_diff = now - datecompare
     cd = date_diff.days
     return cd
