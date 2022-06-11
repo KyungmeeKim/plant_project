@@ -1,4 +1,3 @@
-
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -7,7 +6,7 @@ from .serializers import PostSerializer, ImageSerializer, RaspberrySerializer
 from .models import User, UserImage, Rasdata
 from django.views.decorators.csrf import csrf_exempt
 import time
-# from data import Predict
+from plantsClassification import Predict
 from datetime import datetime
 from .models import Plantmanage
 from .serializers import WaterDataSerializer
@@ -37,13 +36,13 @@ class ImageViewset(viewsets.ModelViewSet):
     #         return JsonResponse({'code': '1001', 'msg': '로그인실패입니다.'}, status=400)
 
 
-    # def create(self, request, *args, **kwargs):
-    #     image = request.POST.get('userimage')
-    #     label = Predict(image)
-    #     serializers = ImageSerializer
-    #     serializers.save(plantname = label)
+    def create(self, request, *args, **kwargs):
+        image = request.POST.get('userimage')
+        label = Predict(image)
+        serializers = ImageSerializer
+        serializers.save(plantname = label)
             
-    #     return super().create(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
        
 

@@ -45,7 +45,8 @@ def Predict(filename, num_images=2):
 
 
 
-  print('Predict....(filename : ' + filename + ' complete)')
+  print('Predict....filename')
+  print(filename)
   tf = transforms.Compose([
     transforms.Resize((224, 224)), # 이미지 사이즈를 resize로 변경한다.
     #transforms.CenterCrop(200), # 이미지 중앙을 resize × resize로 자른다      
