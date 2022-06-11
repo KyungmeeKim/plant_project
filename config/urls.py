@@ -8,6 +8,8 @@ router = routers.DefaultRouter()
 router.register(r'register', views.PostViewset)
 router.register(r'profileimage', views.ImageViewset)
 router.register(r'raspberry', views.PostViewset_raspberry)
+router.register(r'waterdate', views.WaterViewset)
+
 
 
 

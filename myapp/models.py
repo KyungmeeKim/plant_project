@@ -131,7 +131,7 @@ class Plantmanage(models.Model):
     num = models.AutoField(primary_key=True)
     userid = models.CharField(db_column='userID', max_length=45, blank=True, null=True)  # Field name made lowercase.
     luxdate = models.DateTimeField(db_column='luxDate', blank=True, null=True)  # Field name made lowercase.
-    waterdate = models.DateTimeField(db_column='waterDate', blank=True, null=True)  # Field name made lowercase.
+    waterdate = models.DateTimeField(db_column='waterDate',auto_now= True) # 바뀐점!!!
     plant = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:

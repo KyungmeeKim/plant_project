@@ -24,3 +24,10 @@ class RaspberrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Rasdata
         fields = ('temp', 'humid', 'soil_hum','light', 'date')
+
+from .models import Plantmanage
+
+class WaterDataSerializer(serializers.ModelSerializer): ##바뀐점!!!
+    class Meta:
+        model = Plantmanage
+        fields = ('plant', 'waterdate')
