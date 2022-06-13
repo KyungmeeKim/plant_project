@@ -11,6 +11,7 @@ from plantsClassification import Predict
 from datetime import datetime
 from .models import Plantmanage
 from .serializers import WaterDataSerializer
+import os
 # from rest_framework.decorators import action
 
 
@@ -49,6 +50,12 @@ class WaterViewset(viewsets.ModelViewSet): # 바뀐점!!!!
 class PhotoViewset(viewsets.ModelViewSet): # 바뀐점!!!!
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
+
+    def create(self, request, *args, **kwargs):
+        os.system(
+            'python3 detect.py --weights /home/ubuntu/ai/best.pt --img 640 --conf 0.1 --source /home/ubuntu/img/picam/woo.jpg --project=/home/ubuntu/img/health --name=img')
+
+        return super().create(request, *args, **kwargs)
 
 
 
