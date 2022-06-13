@@ -1,6 +1,6 @@
 from dataclasses import field
 from rest_framework import serializers
-from .models import User, UserImage, Test, Rasdata
+from .models import Photo, User, UserImage, Test, Rasdata
 
 class PostSerializer(serializers.ModelSerializer):
     
@@ -12,12 +12,11 @@ class PostSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
 
     userimage = serializers.ImageField(use_url=True)
-
     # userimage = Base64ImageField(max_length = None, use_url=True, required=False)
     
     class Meta:
         model = UserImage
-        fields = ('user','userimage')
+        fields = ('user','userimage', 'plantname')
 
 
 class RaspberrySerializer(serializers.ModelSerializer):
@@ -31,3 +30,8 @@ class WaterDataSerializer(serializers.ModelSerializer): ##바뀐점!!!
     class Meta:
         model = Plantmanage
         fields = ('plant', 'waterdate')
+
+class PhotoSerializer(serializers.ModelSerializer): ##바뀐점!!!
+    class Meta:
+        model = Photo
+        fields = ('photoid', 'filename', 'status')

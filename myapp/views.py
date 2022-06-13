@@ -1,9 +1,10 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from matplotlib.style import use
 from rest_framework import viewsets
 from rest_framework.serializers import Serializer
-from .serializers import PostSerializer, ImageSerializer, RaspberrySerializer
-from .models import User, UserImage, Rasdata
+from .serializers import PostSerializer, ImageSerializer, RaspberrySerializer, PhotoSerializer
+from .models import User, UserImage, Rasdata, Photo
 from django.views.decorators.csrf import csrf_exempt
 import time
 from plantsClassification import Predict
@@ -12,37 +13,44 @@ from .models import Plantmanage
 from .serializers import WaterDataSerializer
 # from rest_framework.decorators import action
 
-from .forms import FileUploadForm
-from .models import FileUpload
 
-
-class ImageViewset(viewsets.ModelViewSet):    
-    serializer_class = ImageSerializer
+class ImageViewset(viewsets.ModelViewSet):
+    
     queryset = UserImage.objects.all()
+    serializer_class = ImageSerializer    
+    userid = ''
+    def create(self, request, *args, **kwargs):      
+
+        data1 = ''
+        global userid
+        userid = request.POST.get('user')
+
+        return super().create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+        global userid
+
+        data = UserImage.objects.values().filter(user = userid)
+        
+        data1 = data[0]
+        filename = data1['userimage']
     
-    # iUser = serializer_class.userimage
-    
-    # queryset2 = UserImage.objects.get(user = iUser)
-    # label = Predict(queryset2.userimage)
-    # queryset2.plantname = label
-    # queryset2.save()
 
-
-    # def create(self, request, *args, **kwargs):
-    #     image = request.POST.get('userimage')
-    #     
-    #     serializers = ImageSerializer
-    #     serializers.save(plantname = label)
-            
-    #     return super().create(request, *args, **kwargs)
-
-       
-
-
+        label = Predict(userid, filename)
+        print(label)
+        serializer.save(plantname = label)
 
 class WaterViewset(viewsets.ModelViewSet): # 바뀐점!!!!
     queryset = Plantmanage.objects.all()
     serializer_class = WaterDataSerializer
+
+class PhotoViewset(viewsets.ModelViewSet): # 바뀐점!!!!
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
+
+
 
 # @csrf_exempt
 # def post(request):

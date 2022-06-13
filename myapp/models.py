@@ -178,11 +178,31 @@ class User(models.Model):
 
 
 class UserImage(models.Model):
-    user = models.CharField(max_length=50)
+    user = models.CharField(primary_key=True,max_length=50)
     userimage = models.ImageField(db_column='userImage', upload_to='')  # Field name made lowercase.
-    plantname = models.CharField(db_column="plantName", max_length=50)
+    plantname = models.CharField(db_column="plantName", max_length=50,blank=True, null=True)
+
 
     class Meta:
         managed = False
         db_table = 'userImage'
 
+class UserImage2(models.Model):
+    user = models.CharField(primary_key=True,max_length=50)
+    userimage = models.ImageField(db_column='userImage', upload_to='')  # Field name made lowercase.
+    plantname = models.CharField(db_column="plantName", max_length=50,blank=True, null=True)
+
+
+    class Meta:
+        managed = False
+        db_table = 'userimageview'
+
+class Photo(models.Model):
+    photoid = models.CharField(primary_key=True,max_length=50)
+    filename = models.CharField(db_column="filename", max_length=50,blank=True, null=True)
+    status = models.CharField(db_column="status", max_length=50,blank=True, null=True)
+
+
+    class Meta:
+        managed = False
+        db_table = 'photo'
