@@ -11,6 +11,7 @@ router.register(r'register', views.PostViewset)
 router.register(r'profileimage', views.ImageViewset)
 router.register(r'raspberry', views.PostViewset_raspberry)
 router.register(r'waterdate', views.WaterViewset)
+router.register(r'photo', views.PhotoViewset)
 
 
 
@@ -22,8 +23,8 @@ urlpatterns = [
     path('checkid/', views.CheckId),
     # path("profileimage/", views.post)
     path('userprofileimage/', views.UserProfileImage),
+    path('myapp/', include('myapp.urls')),
     path('', include('myapp.urls'))
     
-
     
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
