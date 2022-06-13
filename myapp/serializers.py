@@ -17,7 +17,7 @@ class ImageSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserImage
-        fields = ('user','userimage', 'plantname')
+        fields = ('user','userimage')
 
 
 class RaspberrySerializer(serializers.ModelSerializer):
