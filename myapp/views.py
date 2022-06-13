@@ -190,8 +190,7 @@ def light(request):
 
 # 문 준 날짜 html
 def water(request):
-    context = {#'waterDate': water_date().loc[0,'max(waterdate).to_pydatetime().strftime('%Y-%m-%d %H:%M:%S')'], # 서버에 원래 위치 (마지막엔 이걸로 연결해야해요!)
-               'waterDate': water_date().loc[0, 'max(date)'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S'), # 서버 rasdate로 예시 위치
+    context = {'waterDate': water_date().loc[0,'max(waterDate)'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S'), # 서버에 원래 위치 (마지막엔 이걸로 연결해야해요!)
                'calDate': cal_date()}
     return render(request, 'water.html',context)
 
@@ -222,23 +221,19 @@ def db_conn() :
 ## 데이터 추출
 def sel_item() : # db에서 data 추출 함수
     db = db_conn()
-    sql = "select * from rasData WHERE date BETWEEN DATE_ADD(NOW(),INTERVAL -7 DAY ) AND NOW()" #1일 동안의 데이터 불러오기 (서버에 적용시 -1로 변경)
+    sql = "select * from rasData WHERE date BETWEEN DATE_ADD(NOW(),INTERVAL -1 DAY ) AND NOW()" #1일 동안의 데이터 불러오기 (서버에 적용시 -1로 변경)
     df = pd.read_sql(sql,db)
     return df
 
 def water_date() : # db에서 data 추출 함수
     db = db_conn()
-    # sql = "select max(waterdate) from weather.plantmanage"  # 물 준 마지막 날짜 기록 가져오기 로컬
-    sql = "select max(date) from user.rasData"  # 물 준 마지막 날짜 기록 가져오기 서버 예제
-    # sql = "select max(waterdate) from user.plantmanage" # 물 준 마지막 날짜 기록 가져오기 서버(마지막엔 이걸로 연결해야해요!)
+    sql = "select max(waterDate) from user.plantmanage" # 물 준 마지막 날짜 기록 가져오기 서버
     df = pd.read_sql(sql,db)
     return df
 
 def cal_date() :
     now = datetime.now()
-    # datecompare = datetime.strptime(water_date().loc[0, 'max(waterdate)'], '%Y-%m-%d %H:%M') 로컬 테스트
-    datecompare = water_date().loc[0, 'max(date)'].to_pydatetime() # 서버 rasData로 테스트
-    # datecompare = water_date().loc[0, 'max(waterDate)'].to_pydatetime() # 서버 원래 위치 연결 (마지막엔 이걸로 연결해야해요!)
+    datecompare = water_date().loc[0, 'max(waterDate)'].to_pydatetime() # 서버 원래 위치 연결
     date_diff = now - datecompare
     cd = date_diff.days
     return cd
