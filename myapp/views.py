@@ -53,7 +53,7 @@ class PhotoViewset(viewsets.ModelViewSet): # 바뀐점!!!!
 
     def create(self, request, *args, **kwargs):
         os.system(
-            'python3 detect.py --weights /home/ubuntu/ai/best.pt --img 640 --conf 0.1 --source /home/ubuntu/img/picam/woo.jpg --project=/home/ubuntu/img/health --name=img')
+            'python3 /home/ubuntu/yolov5/detect.py --weights /home/ubuntu/ai/best.pt --img 640 --conf 0.1 --source /home/ubuntu/img/picam/woo.jpg --project=/home/ubuntu/img/health --name=img')
 
         return super().create(request, *args, **kwargs)
 
