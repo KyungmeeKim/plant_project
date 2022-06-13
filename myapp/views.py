@@ -177,7 +177,7 @@ def temp(request):
 # 습도html
 def humid(request):
     context = {'date': sel_item()["date"],
-               'humid': sel_item()['humid']
+               'humid': sel_item()['soil_hum']
                }
     return render(request, 'humid.html',context)
 
