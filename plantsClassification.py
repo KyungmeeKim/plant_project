@@ -9,13 +9,13 @@ import pymysql
 
 
 device = torch.device("cpu")
-#dir = '/home/ubuntu/img/and/'
-dir = 'C:/Pegue/Final_Project/plant_project-main/plant_project-main/media/'
+dir = '/home/ubuntu/img/and/'
+#dir = 'C:/Pegue/Final_Project/plant_project-main/plant_project-main/media/'
 
 model=models.regnet_x_32gf(pretrained=False)
 model.fc=nn.Linear(in_features=2520, out_features=6) 
-#model.load_state_dict(torch.load("/home/ubuntu/ai/plants_classification.pt", map_location=torch.device('cpu')))
-model.load_state_dict(torch.load("C:/Pegue/Final_Project/test2/plants_classification.pt", map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("/home/ubuntu/ai/plants_classification.pt", map_location=torch.device('cpu')))
+#model.load_state_dict(torch.load("C:/Pegue/Final_Project/test2/plants_classification.pt", map_location=torch.device('cpu')))
 model = model.to(device)
 
 
