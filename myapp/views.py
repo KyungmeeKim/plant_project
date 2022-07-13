@@ -214,11 +214,11 @@ def water(request):
 import pymysql
 import pandas as pd
 
-host_name = 'team7mysql.clhnj2zwdisk.eu-west-2.rds.amazonaws.com'
-host_port = 3306
-username = 'team7'
-password = 'multiteam07'
-database_name = 'user'
+host_name = {$host}
+host_port = {$port}
+username = {$user}
+password = {$passwd}
+database_name = {$dbname}
 
 def db_conn() :
     # db 연결 함수
